@@ -121,7 +121,6 @@ sudo reboot
 
 
 # AMD video driver install
-- worked on: November 17 2021 for rx570 (id imagine all cards would be the same process)
 - went to https://repo.radeon.com/amdgpu-install/latest/ubuntu/focal/
 - right-clicked the link (brings up menu)
 - clicked copy link 
@@ -145,8 +144,7 @@ sudo apt-get update
 
 - i used this link for help https://amdgpu-install.readthedocs.io/en/latest/
 
-- https://amdgpu-install.readthedocs.io/en/latest/install-overview.html
-- said that i needed to use "Workstation" usecase becasue "All-Open" usecase doesn't support opencl on the rx570 (rx570 older than vega 10)
+- https://amdgpu-install.readthedocs.io/en/latest/install-overview.html said that I needed to use "Workstation" usecase becasue "All-Open" usecase doesn't support opencl on the rx570 (rx570 older than vega 10)
 - https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units?oldformat=true
 
 - ROCr: Provides support for Vega 10 and newer hardware.
@@ -184,8 +182,6 @@ sudo usermod -aG video rig1
 
 
 
-
-
 # installing miners
 - find and copy the download link of the miner (usualy found on github)
 - use the wget command to download shit on linux
@@ -196,7 +192,7 @@ sudo usermod -aG video rig1
 wget https://github.com/NebuTech/NBMiner/releases/download/v39.7/NBMiner_39.7_Linux.tgz
 tar -xf NBMiner*.tgz
 ls # if you want to see if it was extracted properly
-cd NB # then hit tab a once (or maybe a few times to auto complete becasue you are lazy and don't want to type the whole nameout)
+cd NB # then hit tab to auto complete becasue you are way to lazy to type out the whole name every time
 nano start_ergo.sh # to edit your info
 ./start_ergo.sh # to start mining
 ```
