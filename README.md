@@ -2,15 +2,15 @@
 https://ubuntu.com/#download
 # burn
 https://rufus.ie/en/
-# install with wired internet to reduce gray hair
+# might have to fuck with internet setting if not using ethernet
 ```
-sudo -i
-apt install network-manager
-```
-```
-nano /etc/netplan/*
+sudo apt install network-manager
 ```
 ```
+sudo nano /etc/netplan/*
+```
+```
+# example
   network:
     ethernets:
         enp7s0:
@@ -29,29 +29,34 @@ nano /etc/netplan/*
 netplan generate
 netpaln apply
 ```
-# add amdgpu to boot options
+# updates
 ```
 apt install & sudo apt upgrade
 ```
+# add amdgpu to boot options ( this allows overclocking or compute mode i think )
 ```
-nano /etc/default/grub
+sudo nano /etc/default/grub
 ```
 ```
 GRUB_CMDLINE_LINUX_DEFAULT="amdgpu.ppfeaturemask=0xfffd7fff"
 ```
 ```
-update-grub && sudo update-grub2 && sudo update-initramfs -u -k all
+sudo update-grub && sudo update-grub2 && sudo update-initramfs -u -k all
 ```
+
 # install video drive
-download driver from website
+google amdgpu-pro-install
+or if link still works - https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-20-20
 ```
-scp amdgpu* massaker@10.0.0.246:/home/massaker/
+scp amdgpu* rig1@10.0.0.246:/home/rig1/
 ```
 ```
 tar -Jxvf amdgpu*
 cd amdgpu*
 exit # exit sudo -i
 ```
+pal = vega
+legacy = polaris
 ```
 ./amdgpu-pro-install -y --opencl=pal,legacy,rocm --headless
 ```
