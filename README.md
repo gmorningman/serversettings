@@ -1,30 +1,40 @@
+# info
+- had a rough time installing AMD linux drives so I wrote this document for my future reference and to possibly help others.
+- used for: ubuntu server crypto mining rig
+- worked on: november 17 2021
+- iso file i used: ubuntu-20.04.3-live-server-amd64.iso
+- after install I did everything via ssh
+
 # download
 - https://ubuntu.com/#download
 - find ubtuntu server (LTS version: long term service)
+
 # burn linux iso from windows
 - download https://rufus.ie/en/
 - use rufus to burn .iso
 
-# log in to server pc
-- while still using the server
-- finding ip address
-- finding network name
+# installing ubuntu server
+- i assume you know how to do this (its not hard)
+- put usb in server pc, boot up and selet install and follow the instuctions (thats about it)
+- while on the ubuntu server pc. get the ip address and network name of the ubuntu server pc. these are required for ssh login
 ```
 ip a | grep -i net
 uname -n
 ```
-- once your main pc ssh to server
+
+# connect to ubuntu server pc
+- open terminal fist then: ssh network_name@ip_address
 ```
 ssh rig1@10.0.0.237
 ```
 
 # might have to fuck with internet settings if using wifi
-- if internet is working after fresh install i'd just leave it alone and skip this to save your sanity.
+- if the internet is working after fresh install i'd just leave it alone and skip this to save your sanity.
 ```
 sudo apt install network-manager
 ```
 
-- finding device names
+- troubleshooting: finding device names
 ```
 ip a
 ```
@@ -34,6 +44,13 @@ ip a
 ```
 lspci
 ```
+
+- install network-manager
+
+```
+sudo apt install network-manager
+```
+
 - edit your network file
 - net work file is .yaml
 - extra info = https://www.tutorialspoint.com/yaml/yaml_basics.htm
@@ -65,8 +82,18 @@ netplan generate
 netpaln apply
 ```
 
-# updates
+# increase swap
+- skip this if you have lots of ram
 
+```
+sudo swapoff /swap.img
+sudo fallocate -l 8G /swap.img
+sudo mkswap /swap.img
+sudo swapon /swap.img
+```
+
+# updates
+- update system
 ```
 sudo apt update && sudo apt upgrade
 ```
@@ -84,6 +111,8 @@ sudo nano /etc/default/grub
 ```
 GRUB_CMDLINE_LINUX_DEFAULT="amdgpu.ppfeaturemask=0xfffd7fff"
 ```
+- if amdgpu.ppfeaturemask=0xfffd7fff
+- amdgpu.ppfeaturemask=0xffffffff
 
 ```
 sudo update-grub && sudo update-grub2 && sudo update-initramfs -u -k all
@@ -93,20 +122,19 @@ sudo reboot
 
 # AMD video driver install
 - worked on: November 17 2021 for rx570 (id imagine all cards would be the same process)
-- went to https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-570
-- clicked Ubuntu x86 64-Bit (to open drop down menu)
-- right-clicked download button (brings up menu)
+- went to https://repo.radeon.com/amdgpu-install/latest/ubuntu/focal/
+- right-clicked the link (brings up menu)
 - clicked copy link 
 - then wget and paste that link
 
 ```
-wget https://repo.radeon.com/amdgpu-install/21.40.1/ubuntu/focal/amdgpu-install_21.40.1.40501-1_all.deb
+wget https://repo.radeon.com/amdgpu-install/latest/ubuntu/focal/amdgpu-install-21.40.40500-1_all.deb
 ```
 
-- worst case download on another gui pc
-- scp file transfer over
+- alternative: if for some reason wget doesn't work can try to download the file on your main pc then scp file transfer over
 
 ```
+cd c:\what_ever_dir_has_the_file_in_it_probably_download_folder_thought
 scp amd*.dep rig1@10.0.0.237:/home/rig1
 ```
 
@@ -125,12 +153,33 @@ sudo apt-get update
 - Legacy: Provides support for hardware older than Vega 10.
 - OpenCL: lets you run programs on gpu.
 
-without dpkg command. i recived errors executing amdgpu-install
+
+
 ```
 sudo dpkg --add-architecture i386
+```
+
+- prevents this errror
+```
+The following packages have unmet dependencies:
+ amdgpu-pro-lib32 : Depends: amdgpu-lib32 (= 21.40.40500-1331380) but it is not going to be installed
+                    Depends: libgl1-amdgpu-pro-glx:i386 (= 21.40-1331380) but it is not installable
+                    Depends: libegl1-amdgpu-pro:i386 (= 21.40-1331380) but it is not installable
+                    Depends: libgles2-amdgpu-pro:i386 (= 21.40-1331380) but it is not installable
+                    Depends: libglapi1-amdgpu-pro:i386 (= 21.40-1331380) but it is not installable
+                    Depends: libgl1-amdgpu-pro-dri:i386 (= 21.40-1331380) but it is not installable
+
+```
+
+- install
+```
 amdgpu-install -y --accept-eula --usecase=workstation,rocm,opencl --opencl=rocr,legacy
 ```
 
+- add user to video group  (rig1 is your username)
+```
+sudo usermod -aG video rig1
+```
 
 
 
