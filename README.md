@@ -7,9 +7,9 @@
 
 # download
 - https://ubuntu.com/#download
-- find ubtuntu server (LTS version: long term service)
+- find ubtuntu server (LTS version: long term support)
 
-# burn linux iso from windows
+# burn linux iso from windows to usb
 - download https://rufus.ie/en/
 - use rufus to burn .iso
 
@@ -186,10 +186,20 @@ sudo usermod -aG video rig1
 
 
 
+# installing miners
+- find and copy the download link of the miner (usualy found on github)
+- use the wget command to download shit on linux
+- then use the tar command to extract the shit that was downloaded
+- example for nbminer
 
-
-
-
+```
+wget https://github.com/NebuTech/NBMiner/releases/download/v39.7/NBMiner_39.7_Linux.tgz
+tar -xf NBMiner*.tgz
+ls # if you want to see if it was extracted properly
+cd NB # then hit tab a once (or maybe a few times to auto complete becasue you are lazy and don't want to type the whole nameout)
+nano start_ergo.sh # to edit your info
+./start_ergo.sh # to start mining
+```
 
 
 # install video drive
