@@ -14,15 +14,15 @@
 - use rufus to burn .iso
 
 # installing ubuntu server
-- i assume you know how to do this (its not hard)
-- put usb in server pc, boot up and selet install and follow the instuctions (thats about it)
+- put usb in server pc, boot up and select install and follow the instuctions
+- im assuming you have installed linux before so im very little detail here
 - while on the ubuntu server pc. get the ip address. its required for ssh login
 ```
 ip a | grep -i net
 ```
 
 # connect to ubuntu server pc
-- open terminal fist then: ssh username@ip_address
+- from your main pc open a terminal and type: ssh username@ip_address
 ```
 ssh rig1@10.0.0.237
 ```
@@ -91,7 +91,7 @@ sudo swapon /swap.img
 # updates
 - update system
 ```
-sudo apt update && sudo apt upgrade
+sudo apt update && sudo apt upgrade && sudo reboot
 ```
 
 # unlock gpu settings
@@ -100,7 +100,7 @@ sudo apt update && sudo apt upgrade
 - restart pc
 
 - amdgpu.ppfeaturemask=0xfffd7fff creates /sys/class/drm/card0/device/pp_od_clk_voltage that you can use for overclocking.
-- amdgpu.ppfeaturemask=0xffffffff could also work but that higher setting causes artifacts on many cards (mainly RX 470/570)
+- amdgpu.ppfeaturemask=0xffffffff could also work but that higher setting can cause issues (mainly RX 470/570)
 
 ```
 sudo nano /etc/default/grub
@@ -195,60 +195,4 @@ nano start_ergo.sh # to edit your info
 ```
 
 
-# overclocking
-
-- run as root instead of sudo
-```
-sudo su
-echo "manual" > /sys/class/drm/card1/device/power_dpm_force_performance_level
-echo 1 > /sys/class/drm/card1/device/hwmon/hwmon1/pwm1_enable
-echo 200 > /sys/class/drm/card1/device/hwmon/hwmon1/pwm1 # Fan speed
-```
-
-# overclock info
-```
-/sys/class/drm/card0/device/hwmon/hwmon0/pwm1_enable
-```
-- controls fans PWM state (pulse width modulation)
-- 0 = off
-- 1 = manual
-- 2 = auto
-- default setting is 2 / auto  (aka when gpu gets hot fan goes faster)
-- change to 1 / manual (aka constant speed)
-
-
-```
-/sys/class/drm/card0/device/power_dpm_force_performance_level
-```
-- prevents getting this error:  "write error: Invalid argument"
-
-
-
-echo "manual" > /sys/class/drm/card0/device/power_dpm_force_performance_level 
-
-Then to apply the changes:
-
-sudo echo 0 > /sys/class/drm/card0/device/pp_sclk_od
-sudo echo 1 > /sys/class/drm/card0/device/pp_sclk_od
-
-These are all the settings I use on my crypto mining card which is an AMD Radeon RX570 in case it's useful to anyone.
-
-echo 1 > /sys/class/drm/card0/device/hwmon/hwmon0/pwm1_enable
-echo manual > /sys/class/drm/card0/device/power_dpm_force_performance_level
-echo 200 > /sys/class/drm/card0/device/hwmon/hwmon0/pwm1 # Fan speed
-echo 4 > /sys/class/drm/card0/device/pp_power_profile_mode # Compute Mode
-
-echo "s 3 1100 950" > /sys/class/drm/card0/device/pp_od_clk_voltage
-echo "s 4 1100 950" > /sys/class/drm/card0/device/pp_od_clk_voltage
-echo "s 5 1100 950" > /sys/class/drm/card0/device/pp_od_clk_voltage
-echo "s 6 1100 950" > /sys/class/drm/card0/device/pp_od_clk_voltage
-echo "s 7 1100 950" > /sys/class/drm/card0/device/pp_od_clk_voltage
-
-echo "m 2 1985 950" > /sys/class/drm/card0/device/pp_od_clk_voltage
-
-echo 0 > /sys/class/drm/card0/device/pp_sclk_od
-echo 1 > /sys/class/drm/card0/device/pp_sclk_od
-
-echo 0 > /sys/class/drm/card0/device/pp_mclk_od
-echo 1 > /sys/class/drm/card0/device/pp_mclk_od
 
