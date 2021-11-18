@@ -73,6 +73,7 @@ sudo nano /etc/netplan/*
             password: "your_wifi_password+keep_the_quotes"   
 ```
 
+- apply network settings
 ```
 netplan generate
 netpaln apply
@@ -156,10 +157,9 @@ The following packages have unmet dependencies:
 ```
 
 - install drivers
-- i was using one of thoese 8 slot motherboards with a soldered in cpu and this quite a while for the command to finish
+- i was using one of thoese 8 slot motherboards with a soldered in cpu and this took quite a while for the command to finish
 ```
 amdgpu-install -y --accept-eula --usecase=workstation,rocm,opencl --vulkan=pro --opencl=rocr,legacy --no-32 
-amdgpu-install -y --accept-eula --usecase=workstation,rocm,opencl --opencl=rocr,legacy
 ```
 
 
